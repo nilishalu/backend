@@ -5,16 +5,18 @@ import fs from "fs";
 
 inquirer.prompt(
     [{
-        type: 'input',
         name: 'url',
         message: "Enter the site url"
     }],).then(
     (answers) => {
-        console.log(`Got your url ${answers.url}`);
-        var qr_image = qr.image(answers.url, {type: 'png'});
-        qr_image.pipe(fs.createWriteStream(`${answers.url}.png`));
+        const url = answers.url;
+        var qr_image = qr.image(url, {type: 'png'});
+        qr_image.pipe(fs.createWriteStream(`qr.png`));
 
-        // var png_string = qr.imageSync(answers.url, {type: 'png'});
+        fs.writeFile("URL.text", url, (err) => {
+            if (err) throw err;
+            console.log("File has been created")
+        })
     }
 ).catch((error) => {
     console.log(error);
